@@ -1,5 +1,7 @@
+# PHÁT TRIỂN CÁC MODULE THƯ VIỆN CHO PROJECT
 
 This directory is intended for project specific (private) libraries.
+
 PlatformIO will compile them to static libraries and link into the executable file.
 
 The source code of each library should be placed in a separate directory
@@ -7,6 +9,7 @@ The source code of each library should be placed in a separate directory
 
 For example, see the structure of the following example libraries `Foo` and `Bar`:
 
+```text
 |--lib
 |  |
 |  |--Bar
@@ -27,8 +30,11 @@ For example, see the structure of the following example libraries `Foo` and `Bar
 |--src
    |- main.c
 
-Example contents of `src/main.c` using Foo and Bar:
 ```
+
+Example contents of `src/main.c` using Foo and Bar:
+
+```cpp
 #include <Foo.h>
 #include <Bar.h>
 
@@ -43,4 +49,40 @@ The PlatformIO Library Dependency Finder will find automatically dependent
 libraries by scanning project source files.
 
 More information about PlatformIO Library Dependency Finder
-- https://docs.platformio.org/page/librarymanager/ldf.html
+
+- [https://docs.platformio.org/page/librarymanager/ldf.hhtml](https://docs.platformio.org/page/librarymanager/ldf.html)
+
+## Phát triển cho project
+
+### Thiết kế ban đầu như sau
+
+```text
+/Project
+|-- lib
+|   |-- WiFiManagerModule
+|   |    |- WiFiManagerModule.h
+|   |    |- WiFiManagerModule.cpp
+|
+|   |-- SensorModule
+|   |    |- SensorModule.h
+|   |    |- SensorModule.cpp
+|
+|   |-- MQTTModule
+|   |    |- MQTTModule.h
+|   |    |- MQTTModule.cpp
+|
+|   |-- WebServerModule
+|   |    |- WebServerModule.h
+|   |    |- WebServerModule.cpp
+|
+|   |-- OTAModule
+|   |    |- OTAModule.h
+|   |    |- OTAModule.cpp
+|
+|-- src
+|   |-- main.cpp
+|
+|-- platformio.ini
+```
+
+>Mỗi folder trong `lib` chứa `1 file .h + 1 file .cpp`. Chúng ta `code theo procedural C`, tức là `các hàm sẽ là function-level, không dùng class, mỗi module sẽ expose các hàm API cần thiết`.
