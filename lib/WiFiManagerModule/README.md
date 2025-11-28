@@ -25,3 +25,66 @@ Là chế độ kết nối WiFi của ESP vào mạng WiFi router
 - Tại đây chọn option `ConfigureWiFi` để kết nối với mạng WiFi router, nhập mật khẩu và `Save`
 
 - ESP32 sẽ được kết nối với WiFI router
+
+## Quy trình code phát triển
+
+- Dùng thư viện `WiFi.h` được tích hợp sẵn trong core Arduino
+
+- Dùng thư viện `WiFiManager.h` được cài đặt
+
+- Đầu tiên, cấu hình cho board vào chế độ AP + STA để board có thể phát WiFi ở chế độ AP và đồng thời kết nối với WiFi router STA
+
+  - Khởi tạo 1 đối tượng từ WiFiManager
+
+  ```cpp
+  static WiFiManager wm; // dùng static để chỉ định đối tượng này là private
+  ```
+  
+  - Thiết lập chế độ
+
+  ```cpp
+  WiFi.mode(MODE_AP_STA);
+  ```
+
+- Bắt đầu phát WiFi AP với tên của WiFi AP
+
+```cpp
+WiFi.softAP("ESP32_AP");
+```
+
+- Lấy địa chỉ IP của WiFi AP
+
+```cpp
+WiFi.softAPIP();
+```
+
+- Tự động kết nối WiFi AP khi mất kết nối
+
+```cpp
+wm.autoConnect("ESP32_AP");
+```
+
+- Mở portal để cấu hình WiFi router mới
+
+```cpp
+wm.startConfigPortal("ESP32_AP");
+```
+
+- Kiểm tra trạng thái kết nối WiFi router
+
+```cpp
+WiFi.status() == WL_CONNECTED; // kết nối thành công
+WiFi.status() != WL_CONNECTED; // kết nối không thành công
+```
+
+- Lấy địa chỉ IP của WiFi router
+
+```cpp
+WiFi.localIP();
+```
+
+- Tự động kết nối WiFi router lại khi mất kết nối
+
+```cpp
+WiFi.reconnect();
+```

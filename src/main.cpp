@@ -18,12 +18,9 @@ void loop() {
 
   float temp, humi;
   if (readSensor(&temp, &humi)) {
-    Serial.print("Temperature (C): ");
-    Serial.println(temp);
-    Serial.print("Humidity (%): ");
-    Serial.println(humi);
+    Serial.printf("Temperature: %.1f °C, Humidity: %.1f%%\n", temp, humi);
   } else {
-    Serial.println("Sensor read failed!");
+    Serial.println("Sensor read failed");
   }
 
   // Hoặc in JSON
