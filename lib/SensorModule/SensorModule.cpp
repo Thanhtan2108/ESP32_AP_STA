@@ -26,8 +26,9 @@ void initSensor(void) {
     Serial.println("UNKNOWN");
 #endif
     dht.begin();
+    Serial.println("Initialized successfully!");
     // Có thể chờ một chút để cảm biến ổn định
-    delay(500);
+    delay(1500);
 }
 
 bool readSensor(float* temperature, float* humidity) {
@@ -39,6 +40,7 @@ bool readSensor(float* temperature, float* humidity) {
 
     // Kiểm tra giá trị hợp lệ
     if (isnan(h) || isnan(t)) {
+        Serial.println("DHT read failed (NaN)");
         return false;
     }
 

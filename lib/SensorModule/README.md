@@ -1,6 +1,6 @@
 # MODULE THƯ VIỆN CẢM BIẾN DHT
 
-Mục tiêu đo được nhiệt độ, độ ẩm thông qua các API có sẵn từ thư viện `DHT.h`
+## Mục tiêu đo được nhiệt độ, độ ẩm thông qua các API có sẵn từ thư viện `DHT.h`
 
 - Chỉ định chân kết nối cảm biến với board
 

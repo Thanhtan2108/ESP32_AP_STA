@@ -26,7 +26,7 @@ Là chế độ kết nối WiFi của ESP vào mạng WiFi router
 
 - ESP32 sẽ được kết nối với WiFI router
 
-## Quy trình code phát triển
+## Quy trình code phát triển bằng các API hỗ trợ của thư viện
 
 - Dùng thư viện `WiFi.h` được tích hợp sẵn trong core Arduino
 
