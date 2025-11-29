@@ -68,3 +68,9 @@ extern "C" {
 - [Chi tiết nội dung xem tại đây](./lib/DisplayModule/README.md)
 
 - [Code thư viện xem tại đây](./lib/DisplayModule)
+
+### Giao thức MQTT
+
+- [Chi tiết nội dung xem tại đây](./lib/MQTTModule/README.md)
+
+- [Code thư viện xem tại đây](./lib/MQTTModule)
