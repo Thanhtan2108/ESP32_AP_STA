@@ -94,8 +94,49 @@ void DisplayModule_showSensor(float temperature_c, float humidity_pct) {
     display.setTextSize(2);
     display.setCursor(0, 44);
     display.print("Do am: ");
-    snprintf(buf, sizeof(buf), "%.0f%%", humidity_pct);
+    snprintf(buf, sizeof(buf), "%.1f%%", humidity_pct);
     display.print(buf);
 
     display.display();
 }
+
+// Hiển thị thông tin WiFi: STA IP, AP IP và trạng thái kết nối
+void DisplayModule_showWiFiInfo(const char* sta_ip, const char* ap_ip, bool sta_connected) {
+    display.clearDisplay();
+    display.setTextSize(1);
+    display.setTextColor(SSD1306_WHITE);
+
+    // Dòng 1: Tiêu đề
+    display.setCursor(0, 0);
+    display.println("WiFi Status:");
+
+    // Dòng 2: STA status
+    display.setCursor(0, 10);
+    if (sta_connected) {
+        display.print("STA: ");
+        display.println(sta_ip);
+    } else {
+        display.println("STA: Disconnected");
+    }
+
+    // Dòng 3: AP info
+    display.setCursor(0, 22);
+    display.print("AP: ");
+    display.println(ap_ip);
+
+    // Dòng 4: Network name
+    display.setCursor(0, 34);
+    display.println("SSID: ESP32_AP");
+
+    // Dòng 5: Ghi chú
+    display.setCursor(0, 46);
+    display.setTextSize(1);
+    display.println("Port: 80");
+
+    // Dòng 6: Chỉ dẫn
+    display.setCursor(0, 56);
+    display.println("Visit: http://IP");
+
+    display.display();
+}
+

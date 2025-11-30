@@ -69,8 +69,10 @@ extern "C" {
 
 - [Code thư viện xem tại đây](./lib/DisplayModule)
 
-### Giao thức MQTT
+### Web Server
 
-- [Chi tiết nội dung xem tại đây](./lib/MQTTModule/README.md)
+- [Code thư viện xem tại đây](./lib/WebServerModule)
 
-- [Code thư viện xem tại đây](./lib/MQTTModule)
+### OTA
+
+- Sẽ phát triển trong tương lai

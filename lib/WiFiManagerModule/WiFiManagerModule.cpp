@@ -36,6 +36,10 @@ IPAddress WiFiManagerModule_getLocalIP() {
     return WiFi.localIP();
 }
 
+IPAddress WiFiManagerModule_getAPIP() {
+    return WiFi.softAPIP();
+}
+
 // Force mở portal để cấu hình Wi-Fi mới
 void WiFiManagerModule_startConfigPortal() {
     Serial.println("Starting config portal...");

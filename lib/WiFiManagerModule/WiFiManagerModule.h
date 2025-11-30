@@ -18,6 +18,9 @@ bool WiFiManagerModule_isWiFiConnected();
 // Lấy IP STA
 IPAddress WiFiManagerModule_getLocalIP();
 
+// Lấy IP AP
+IPAddress WiFiManagerModule_getAPIP();
+
 // Force mở portal để đổi Wi-Fi
 void WiFiManagerModule_startConfigPortal();
 
@@ -29,3 +32,4 @@ void WiFiManagerModule_handleReconnect();
 #endif
 
 #endif
+
