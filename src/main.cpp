@@ -4,13 +4,44 @@
 #include "SensorModule.h"
 #include "DisplayModule.h"
 #include "WebServerModule.h"
+#include "ButtonModule.h"
+
+// ====== CONFIGURATION ======
+#define BUTTON_PIN 19  // GPIO 19 (chân thông thường, hỗ trợ interrupt)
+// Kết nối: GPIO 19 nối Ground qua nút nhấn (hoặc LED pull-down)
+// ===========================
 
 unsigned long lastRead = 0;
 const unsigned long interval = 3000;
 unsigned long wifiInfoDisplayTime = 0;
-const unsigned long wifiInfoDuration = 30000; // Hiển thị WiFi info trong 30s lúc khởi động
+const unsigned long wifiInfoDuration = 15000; // Hiển thị WiFi info trong 15s lúc khởi động
 bool wifiInfoShowed = false; // Flag để theo dõi đã hiển thị WiFi info chưa
 bool wifiWasConnected = false; // Theo dõi trạng thái WiFi lần trước
+
+// Callback function khi nút được nhấn giữ
+void onButtonReset() {
+  Serial.println("\n[MAIN] ===== BUTTON RESET TRIGGERED (3 giay) =====");
+  Serial.println("[MAIN] Resetting WiFi configuration...");
+  
+  // Hiển thị thông báo lên OLED
+  DisplayModule_clear();
+  DisplayModule_showMessage("RESET WiFi", "Dang xoa config...");
+  delay(500);
+  
+  // Reset WiFi config
+  WiFiManagerModule_resetWiFiConfig();
+  
+  // Hiển thị thông báo kết quả
+  DisplayModule_showMessage("WiFi Reset OK", "Dang khoi dong AP");
+  delay(2000);
+  
+  // Reset display flags để hiển thị WiFi info lại
+  wifiInfoShowed = false;
+  wifiWasConnected = false;
+  wifiInfoDisplayTime = millis();
+  
+  Serial.println("[MAIN] ===== RESET COMPLETE - Waiting for WiFi connection =====\n");
+}
 
 void setup() {
   Serial.begin(115200);
@@ -40,6 +71,11 @@ void setup() {
   WebServerModule_init(80);
   WebServerModule_start();
   
+  // Init Button Module
+  ButtonModule_init(BUTTON_PIN);
+  ButtonModule_setResetCallback(onButtonReset);
+  Serial.println("[MAIN] Button Module initialized on GPIO " + String(BUTTON_PIN));
+  
   // Bắt đầu hiển thị WiFi info
   wifiInfoDisplayTime = millis();
 }
@@ -47,6 +83,9 @@ void setup() {
 void loop() {
   // Kick watchdog
   esp_task_wdt_reset();
+
+  // Xử lý Button
+  ButtonModule_loop();
 
   // Xử lý request HTTP (LUÔN xử lý, kể cả khi WiFi mất)
   WebServerModule_loop();

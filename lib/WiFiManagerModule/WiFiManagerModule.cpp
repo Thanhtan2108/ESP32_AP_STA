@@ -58,3 +58,34 @@ void WiFiManagerModule_handleReconnect() {
         delay(5000); // đợi 5s trước khi check lại
     }
 }
+
+// Reset WiFi config: xóa WiFi đã lưu, ngắt STA, mở AP portal
+void WiFiManagerModule_resetWiFiConfig() {
+    Serial.println("[WiFiManagerModule] ===== RESET WiFi CONFIG =====");
+    
+    // Xóa WiFi config đã lưu
+    wm.resetSettings();
+    Serial.println("[WiFiManagerModule] WiFi config erased");
+    
+    // Ngắt kết nối STA
+    WiFi.disconnect(true); // true = tắt WiFi radio
+    delay(500);
+    Serial.println("[WiFiManagerModule] STA disconnected");
+    
+    // Bật lại WiFi AP + STA mode
+    WiFi.mode(WIFI_AP_STA);
+    delay(500);
+    
+    // Bật AP
+    WiFi.softAP("ESP32_AP");
+    Serial.println("[WiFiManagerModule] AP started: ESP32_AP");
+    Serial.print("[WiFiManagerModule] AP IP: ");
+    Serial.println(WiFi.softAPIP());
+    
+    // Mở config portal để người dùng kết nối mạng WiFi mới
+    Serial.println("[WiFiManagerModule] Opening config portal for WiFi selection...");
+    wm.startConfigPortal("ESP32_AP");
+    
+    Serial.println("[WiFiManagerModule] ===== WiFi CONFIG RESET COMPLETE =====");
+}
+
