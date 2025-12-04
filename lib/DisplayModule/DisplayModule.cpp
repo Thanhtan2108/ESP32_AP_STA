@@ -64,22 +64,54 @@ void DisplayModule_showSensor(float temperature_c, float humidity_pct) {
 
     display.clearDisplay();
 
-    // Dòng 1: "Nhiet do:" và giá trị C
+    // Dòng 1: "Nhiet do:" và giá trị
     display.setTextSize(2);
     display.setCursor(0, 0);
-    display.println("Nhiet do:");
-    snprintf(buf, sizeof(buf), "%.1f C", temperature_c);
+    display.print("Nhiet do:");
+
+    // In giá trị nhiệt độ ở phía phải (căn chỉnh vị trí)
+    // Tạo chuỗi value
+    snprintf(buf, sizeof(buf), "%.1f", temperature_c);
+    // đặt vị trí con trỏ ở dòng 2 (hoặc ở x phù hợp)
+    // Chúng ta in giá trị lớn hơn ở dưới để rõ:
+    display.setCursor(0, 22); // y=22 phù hợp cho text size 2
     display.print(buf);
+
+    // Vẽ ký tự độ (vòng nhỏ) ở phía trên phải của giá trị
+    // Tính toạ độ tương đối: lấy vị trí con trỏ + width của chuỗi
+    int16_t x1, y1;
+    uint16_t w, h;
+    display.getTextBounds(buf, 0, 22, &x1, &y1, &w, &h);
+    // Vẽ chấm nhỏ bên trên góc phải của số
+    _drawDegreeSymbol(x1 + w + 6, 18); // 6 px offset để cách số 1 chút
+
+    // In chữ C (ký tự ASCII 'C') bên cạnh ký tự độ
+    display.setCursor(x1 + w + 10, 18);
+    display.setTextSize(2);
+    display.print("C");
 
     // Dòng 2 (hoặc dưới): "Do am:" và giá trị %
     display.setTextSize(2);
+<<<<<<< HEAD
+<<<<<<< HEAD
     display.setCursor(0, 35);
     display.println("Do am:");
     snprintf(buf, sizeof(buf), "%.1f %%", humidity_pct);
+=======
+    display.setCursor(0, 44);
+    display.print("Do am: ");
+    snprintf(buf, sizeof(buf), "%.0f%%", humidity_pct);
+>>>>>>> parent of 230b6c3 (develop successful web server)
+=======
+    display.setCursor(0, 44);
+    display.print("Do am: ");
+    snprintf(buf, sizeof(buf), "%.1f%%", humidity_pct);
+>>>>>>> parent of 44640b3 (develop function for button reset wifi but no test)
     display.print(buf);
 
     display.display();
 }
+<<<<<<< HEAD
 
 // Hiển thị thông tin WiFi: STA IP, AP IP và trạng thái kết nối
 void DisplayModule_showWiFiInfo(const char* sta_ip, const char* ap_ip, bool sta_connected) {
@@ -88,8 +120,8 @@ void DisplayModule_showWiFiInfo(const char* sta_ip, const char* ap_ip, bool sta_
     display.setTextColor(SSD1306_WHITE);
 
     // Dòng 1: Tiêu đề
-    display.setCursor(10, 0);
-    display.println("WiFi Status");
+    display.setCursor(0, 0);
+    display.println("WiFi Status:");
 
     // Dòng 2: STA status
     display.setCursor(0, 10);
@@ -102,12 +134,12 @@ void DisplayModule_showWiFiInfo(const char* sta_ip, const char* ap_ip, bool sta_
 
     // Dòng 3: AP info
     display.setCursor(0, 22);
-    display.println("SSID: ESP32_AP");
+    display.print("AP: ");
+    display.println(ap_ip);
 
     // Dòng 4: Network name
     display.setCursor(0, 34);
-    display.print("AP: ");
-    display.println(ap_ip);
+    display.println("SSID: ESP32_AP");
 
     // Dòng 5: Ghi chú
     display.setCursor(0, 46);
@@ -116,11 +148,12 @@ void DisplayModule_showWiFiInfo(const char* sta_ip, const char* ap_ip, bool sta_
 
     // Dòng 6: Chỉ dẫn
     display.setCursor(0, 56);
-    display.println("Visit: http://STA");
+    display.println("Visit: http://IP");
 
     display.display();
 }
 
+<<<<<<< HEAD
 // Hiển thị thông báo (title + message)
 void DisplayModule_showMessage(const char* title, const char* message) {
     display.clearDisplay();
@@ -136,3 +169,7 @@ void DisplayModule_showMessage(const char* title, const char* message) {
     display.display();
 }
 
+=======
+>>>>>>> parent of 230b6c3 (develop successful web server)
+=======
+>>>>>>> parent of 44640b3 (develop function for button reset wifi but no test)
