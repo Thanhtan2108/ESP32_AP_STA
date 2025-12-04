@@ -7,14 +7,15 @@
 #include "ButtonModule.h"
 
 // ====== CONFIGURATION ======
-#define BUTTON_PIN 19  // GPIO 19 (chân thông thường, hỗ trợ interrupt)
+#define LED_PIN 2      // GPIO 2 tích hợp LED trên nhiều board ESP32
+#define BUTTON_PIN 18  // GPIO 18 (chân thông thường, hỗ trợ interrupt)
 // Kết nối: GPIO 19 nối Ground qua nút nhấn (hoặc LED pull-down)
 // ===========================
 
 unsigned long lastRead = 0;
 const unsigned long interval = 3000;
 unsigned long wifiInfoDisplayTime = 0;
-const unsigned long wifiInfoDuration = 15000; // Hiển thị WiFi info trong 15s lúc khởi động
+const unsigned long wifiInfoDuration = 30000; // Hiển thị WiFi info trong 30s lúc khởi động
 bool wifiInfoShowed = false; // Flag để theo dõi đã hiển thị WiFi info chưa
 bool wifiWasConnected = false; // Theo dõi trạng thái WiFi lần trước
 
@@ -47,8 +48,8 @@ void setup() {
   Serial.begin(115200);
   delay(1000);
 
-  // Enable Task Watchdog: 5s timeout
-  esp_task_wdt_init(5, true); // timeout 5s, reset on trigger
+  // Enable Task Watchdog: 30s timeout
+  esp_task_wdt_init(30, true); // timeout 30s, reset on trigger
   esp_task_wdt_add(NULL);     // add current loop task to WDT
 
   // seed RNG sớm để clientId MQTT (nếu dùng random) sẽ khác nhau
@@ -103,8 +104,13 @@ void loop() {
     wifiInfoDisplayTime = millis();
   }
   wifiWasConnected = wifiConnected;
+  
+  if (wifiConnected) {
+    digitalWrite(LED_PIN, !digitalRead(LED_PIN)); // Blink LED khi có WiFi
+    delay(500);
+  }
 
-  // Hiển thị WiFi info trong 30s lúc khởi động hoặc khi WiFi mất
+  // Hiển thị WiFi info trong 10s lúc khởi động hoặc khi WiFi mất
   if (!wifiInfoShowed && (millis() - wifiInfoDisplayTime) < wifiInfoDuration) {
     char sta_ip[16], ap_ip[16];
     IPAddress sta_addr = WiFiManagerModule_getLocalIP();
