@@ -16,12 +16,15 @@ bool DisplayModule_init(uint8_t i2c_sda_pin, uint8_t i2c_scl_pin, uint8_t i2c_ad
 // text in Vietnamese but without diacritics (no dấu)
 void DisplayModule_showSensor(float temperature_c, float humidity_pct);
 
+<<<<<<< HEAD
 // Hiển thị thông tin WiFi (STA IP, AP IP)
 void DisplayModule_showWiFiInfo(const char* sta_ip, const char* ap_ip, bool sta_connected);
 
 // Hiển thị thông báo (title + message)
 void DisplayModule_showMessage(const char* title, const char* message);
 
+=======
+>>>>>>> parent of 230b6c3 (develop successful web server)
 // Xóa màn hình
 void DisplayModule_clear();
 
@@ -31,4 +34,3 @@ void DisplayModule_setTextSize(uint8_t size);
 #ifdef __cplusplus
 }
 #endif
-

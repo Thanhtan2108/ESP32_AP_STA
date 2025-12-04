@@ -73,13 +73,20 @@ void DisplayModule_showSensor(float temperature_c, float humidity_pct) {
 
     // Dòng 2 (hoặc dưới): "Do am:" và giá trị %
     display.setTextSize(2);
+<<<<<<< HEAD
     display.setCursor(0, 35);
     display.println("Do am:");
     snprintf(buf, sizeof(buf), "%.1f %%", humidity_pct);
+=======
+    display.setCursor(0, 44);
+    display.print("Do am: ");
+    snprintf(buf, sizeof(buf), "%.0f%%", humidity_pct);
+>>>>>>> parent of 230b6c3 (develop successful web server)
     display.print(buf);
 
     display.display();
 }
+<<<<<<< HEAD
 
 // Hiển thị thông tin WiFi: STA IP, AP IP và trạng thái kết nối
 void DisplayModule_showWiFiInfo(const char* sta_ip, const char* ap_ip, bool sta_connected) {
@@ -136,3 +143,5 @@ void DisplayModule_showMessage(const char* title, const char* message) {
     display.display();
 }
 
+=======
+>>>>>>> parent of 230b6c3 (develop successful web server)
