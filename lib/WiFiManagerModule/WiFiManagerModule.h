@@ -24,9 +24,6 @@ void WiFiManagerModule_startConfigPortal();
 // Nên gọi trong loop để tự reconnect nếu STA mất
 void WiFiManagerModule_handleReconnect();
 
-// Reset WiFi config: xóa WiFi đã lưu và mở lại AP portal
-void WiFiManagerModule_resetWiFiConfig();
-
 #ifdef __cplusplus
 }
 #endif

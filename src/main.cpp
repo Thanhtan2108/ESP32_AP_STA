@@ -2,12 +2,14 @@
 #include "WiFiManagerModule.h"
 #include "SensorModule.h"
 #include "DisplayModule.h"
-#include "MQTTModule.h"
+#include "WebServerModule.h"
 
-// cấu hình MQTT (thay bằng broker/port/topic của bạn)
-static const char* MQTT_BROKER = "test.mosquitto.org";
-static const uint16_t MQTT_PORT = 1883;
-static const char* MQTT_PUB_TOPIC = "esp32/sensor";
+unsigned long lastRead = 0;
+const unsigned long interval = 3000;
+unsigned long wifiInfoDisplayTime = 0;
+const unsigned long wifiInfoDuration = 30000; // Hiển thị WiFi info trong 30s lúc khởi động
+bool wifiInfoShowed = false; // Flag để theo dõi đã hiển thị WiFi info chưa
+bool wifiWasConnected = false; // Theo dõi trạng thái WiFi lần trước
 
 void setup() {
   Serial.begin(115200);
@@ -29,26 +31,21 @@ void setup() {
   // Khởi tạo sensor
   initSensor();
 
-  // Init MQTT (khởi tạo client)
-  if (!MQTTModule_init(MQTT_BROKER, MQTT_PORT, MQTT_PUB_TOPIC)) {
-    Serial.println("[MAIN] MQTT init failed (unexpected)");
-  } else {
-    Serial.println("[MAIN] MQTT initialized");
-  }
-
-  // Kết nối MQTT LẦN ĐẦU nhưng CHỈ khi WiFi STA đã connect
-  if (WiFiManagerModule_isWiFiConnected()) {
-    if (MQTTModule_connect()) {
-      Serial.println("[MAIN] MQTT connected");
-    } else {
-      Serial.println("[MAIN] MQTT connect failed (will retry in loop)");
-    }
-  } else {
-    Serial.println("[MAIN] WiFi STA not connected yet — MQTT connect deferred");
-  }
+  // Init WebServer
+  WebServerModule_init(80);
+  WebServerModule_start();
+  
+  // Bắt đầu hiển thị WiFi info
+  wifiInfoDisplayTime = millis();
 }
 
 void loop() {
+  // Kick watchdog
+  esp_task_wdt_reset();
+
+  // Xử lý request HTTP (LUÔN xử lý, kể cả khi WiFi mất)
+  WebServerModule_loop();
+
   // Kiểm tra STA, reconnect nếu mất
   WiFiManagerModule_handleReconnect();
 
